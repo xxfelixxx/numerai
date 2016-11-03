@@ -33,10 +33,6 @@ for (i in seq(1,nrow(tournament))) {
 colnames(dm) <-  c("t_id", "probability")
 write.csv(out,"guess_bin.csv", row.names=FALSE)
 
-significance <- 0.05
-
-rows <- dim(training)[1]
-
 ## library(randomForest)
 
 ## ii <- c(1:100)

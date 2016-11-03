@@ -5,6 +5,7 @@ target_0 <- which(training$target == 0)
 target_1 <- which(training$target == 1)
 
 significance <- 0.05
+rows <- dim(training)[1]
 
 # Plots of the features
 for (feature in colnames(training)) {
