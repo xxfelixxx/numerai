@@ -46,6 +46,7 @@ for (feature in colnames(training)) {
     bins <- seq(0,1,binsize)
     h0 <- hist(f0,bins)
     h1 <- hist(f1,bins)
+    h2 <- h1$counts / (h1$counts + h0$counts) * 100
     max_density <- max(h0$density, h1$density)
     xlabtxt <- paste("bins of size", binsize, "from 0 to 1", sep=" ")
     ymax <- ceiling(max_density)
@@ -65,5 +66,25 @@ for (feature in colnames(training)) {
          ylim=c(0,ymax),xlim=c(0,ymax))
     points(h0$density,h1$density, pch=20, cex=0.5)
     lines(c(0,ymax),c(0,ymax))
+    dev.off()
+
+    png_filename=paste(feature,"_percent_bin",sep="")
+    png(file=png_filename)    
+    ylim <- c(40,60)
+    plot(c(0,1),ylim, main=paste(feature, "_percent_bin.png"),
+         col="#FFFFFFFF", ylab="Percent Target -> 1", xlab="Feature Value",
+         ylim=ylim,xlim=c(0,1))
+    dz <- 1
+    mid <- 50
+    zz <- which(mid - dz < h2 & h2 < mid + dz)
+    z0 <- which(h2 < mid - dz)
+    z1 <- which(h2 > mid + dz)
+    lines(c(0,1),c(50,50))
+    points(bins[-1][zz],h2[zz], pch=20, cex=1, col="green")
+    points(bins[-1][z0],h2[z0], pch=20, cex=1, col="red")
+    points(bins[-1][z1],h2[z1], pch=20, cex=1, col="blue")        
+    text(0.25, ylim[2], "Target -> 0 more likely", col="red", cex=0.7)
+    text(0.50, ylim[2], "Neutral", col="green", cex=0.7)    
+    text(0.75, ylim[2], "Target -> 1 more likely", col="blue", cex=0.7)    
     dev.off()
 }
