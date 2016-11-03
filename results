@@ -1,0 +1,23 @@
+# LogLoss Results (lower = better)
+#
+# GLM1             -> 0.69329 using all features
+# GLM2             -> 0.69272 using features (6,8,9,13,15,17,19,20,21) *,**,***
+# GLM3             -> 0.69325 using features (6,8,9,15,17,20,21)
+# median bin       -> 0.69272
+# mean bin         -> 0.69272
+# randomTree (500) -> 0.69279 using all features
+# randomTree (50)  -> 0.69272 using features (6,8,9,13,15,17,19,20,21)
+# randomTree (50)  -> 0.69313 using features (6,8,9,13,15,17,19,20,21) v2
+# kNN (101)        -> 0.69726
+# GLM2 scale_0.5   -> 0.69280 out$probability <- out$probability/2+0.25135
+# GLM2 scale_0.51  -> 0.69278 out$probability <- out$probability/2+0.25
+# GLM2 scale_0.52  -> 0.69279 out$probability <- out$probability/2+0.24
+# GLM2 scale_0.53  -> 0.69273 out$probability <- 0.5 + 1.05*(out$probability-0.5)
+# GLM2 scale_0.54  -> 0.69271 out$probability <- 0.5 + 0.95*(out$probability-0.5)
+# GLM2 scale_0.55  -> 0.69271 out$probability <- 0.5 + 0.90*(out$probability-0.5)
+# GLM2 scale_0.56  -> 0.69270 out$probability <- 0.5 + 0.80*(out$probability-0.5)
+# GLM2 scale_0.57  -> 0.69278 out$probability <- 0.5 + 0.50*(out$probability-0.5)
+# GLM2 scale_0.58  -> 0.69271 out$probability <- 0.5 + 0.75*(out$probability-0.5)
+# GLM2 scale_0.59  -> 0.69270 out$probability <- 0.5 + 0.83*(out$probability-0.5)
+# GLM2 scale_0.59(new_data)  -> 0.69288 out$probability <- 0.5 + 0.83*(out$probability-0.5)
+# GLM ENS123_0     -> 0.69326 average of guesses of fit1,fit2,fit3
