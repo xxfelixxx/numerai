@@ -70,10 +70,10 @@ for (feature in colnames(training)) {
     lines(c(0,ymax),c(0,ymax))
     dev.off()
 
-    png_filename=paste(feature,"_percent_bin",sep="")
+    png_filename=paste(feature,"_percent_bin.png",sep="")
     png(file=png_filename)
     ylim <- c(40,60)
-    plot(c(0,1),ylim, main=paste(feature, "_percent_bin.png"),
+    plot(c(0,1),ylim, main=paste(feature, "_percent_bin"),
          col="#FFFFFFFF", ylab="Percent Target -> 1", xlab="Feature Value",
          ylim=ylim,xlim=c(0,1))
     dz <- 1
@@ -114,10 +114,10 @@ for (feature in colnames(training)) {
     hh1 <- hist(g1,bins)
     hh2 <- hh1$counts / (hh1$counts + hh0$counts) * 100
 
-    png_filename=paste(feature,"_percent_bin_adj",sep="")
+    png_filename=paste(feature,"_percent_bin_adj.png",sep="")
     png(file=png_filename)
     ylim <- c(40,60)
-    plot(c(0,1),ylim, main=paste(feature, "_percent_bin_adj.png"),
+    plot(c(0,1),ylim, main=paste(feature, "_percent_bin_adj"),
          col="#FFFFFFFF", ylab="Percent Target -> 1", xlab="Feature Value",
          ylim=ylim,xlim=c(0,1))
     dz <- 1
