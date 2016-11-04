@@ -61,6 +61,19 @@ fit <- glm(target ~ feature6 + feature8 + feature9 + feature20 + feature21, data
 out = PredictTournament( fit, training, tournament)
 write.csv(out,"guess.csv", row.names=FALSE)
 
+# Transformations
+xform <- GetFeatureTransformation( training )
+xform <- apply(xform, 2, function (x) { runmed(x,11) })
+
+new_training   <- ApplyFeatureTransformation( training,   xform )
+new_tournament <- ApplyFeatureTransformation( tournament, xform )
+
+xfit <- glm(target ~ feature1 + feature2 + feature3 + feature4 + feature5 + feature6 + feature7 + feature8 + feature9 + feature10 + feature11 + feature12 + feature13 + feature14 + feature15 + feature16 + feature17 + feature18 + feature19 + feature20 + feature21, data=new_training)
+
+out = PredictTournament( xfit, new_training, new_tournament)
+
+
+
 library("randomForest")
 tree <- randomForest(target ~ ., training, ntree=50, norm.votes=FALSE, nodesize=1)
 
