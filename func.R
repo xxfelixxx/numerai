@@ -62,19 +62,61 @@ PredictProbability <- function(tour, fit, thresh) {
     dt$percent_target1 <- dt$new_percent/100
     dt$percent_target1[z0] <- 1-(dt$new_percent[z0]/100)
 
-    out <- data.frame(t_id, dt$percent_target1)    
+    out <- data.frame(t_id, dt$percent_target1)
     colnames(out) <-  c("t_id", "probability")
     return(out)
 }
 
-PredictTournament <- function( tournament, fit, target ) {
+PredictTournament <- function( fit, training, tournament) {
     # 'fit' is output of gml(...), or randomForest(...), or any other model
-    # 'target' is vector of training classifcations 0/1
-    # 'tournament' is data frame with feature[1-XX]and t_id columns
+    # 'training' is data frame with feature[1-XX] and target columns
+    # 'tournament' is data frame with feature[1-XX] and t_id columns
     guess <- predict(fit)
-    thresh <- FindThreshold(guess,target)
+    thresh <- FindThreshold(guess,training$target)
     out <- PredictProbability(tournament, fit, thresh)
     ll <- ValidateModel(training, fit, thresh)
     writeLines(paste("LogLoss is ", ll, sep=''))
     return(out)
+}
+
+TransformFeatures <- function( training, nbin=100 ) {
+    new_training <- training
+
+    target_0 <- which(training$target == 0)
+    target_1 <- which(training$target == 1)
+
+    for (feature in colnames(training)) {
+        if(feature == 'target') next
+
+        f0 <- training[target_0,eval(feature)]
+        f1 <- training[target_1,eval(feature)]
+
+        binsize <- 1/nbin
+        bins <- seq(0,1,binsize)
+        h0 <- hist(f0,bins,plot=FALSE)
+        h1 <- hist(f1,bins,plot=FALSE)
+        h2 <- h1$counts / (h1$counts + h0$counts) * 100
+        h2 <- runmed(h2,21)
+
+        h2min <- min(h2)
+        h2max <- max(h2)
+        # Linear, what we want
+        h2map <- seq(h2min,h2max,(h2max-h2min)/(length(bins) - 1 - 1))
+
+        f2 <- training[,eval(feature)] # Raw feature values
+        f2 <- round(100*f2)/100
+        f3 <- 0*f2
+        ibins <- bins[-1]
+        for (i in seq(1,length(f3))) {
+            metric <- abs(ibins - f2[i])
+            ii <- which(metric == min(metric))
+            metric <- abs(h2map - h2[ii])
+            ii <- which(metric == min(metric))
+            f3[i] <- ibins[ii]
+        }
+
+        new_training[,eval(feature)] <- f3
+    }
+
+    return( new_training )
 }

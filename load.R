@@ -58,7 +58,7 @@ fit <- glm(target ~ feature6 + feature8 + feature9 + feature20 + feature21, data
 #thresh <- FindThreshold(guess,training$target)
 #out <- PredictProbability(tournament, fit, thresh)
 #ValidateModel(training, fit, thresh)
-out = PredictTournament( tournament, fit, training$target )
+out = PredictTournament( fit, training, tournament)
 write.csv(out,"guess.csv", row.names=FALSE)
 
 library("randomForest")
